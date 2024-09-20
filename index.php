@@ -21,7 +21,7 @@ session_start();
     <!-- loading bar -->
     <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
     <link rel="stylesheet" href="./css/flash.css">
-    <title>Hotel blue bird</title>
+    <title>Tikako Cottage</title>
 </head>
 
 <body>
@@ -47,8 +47,8 @@ session_start();
     <section id="auth_section">
 
         <div class="logo">
-            <img class="bluebirdlogo" src="./image/bluebirdlogo.png" alt="logo">
-            <p>BLUEBIRD</p>
+            <!-- <img class="bluebirdlogo" src="./image/bluebirdlogo.png" alt="logo"> -->
+            <p>Tikako</p>
         </div>
 
         <div class="auth_container">
@@ -66,18 +66,28 @@ session_start();
                 if (isset($_POST['user_login_submit'])) {
                     $Email = $_POST['Email'];
                     $Password = $_POST['Password'];
-
-                    $sql = "SELECT * FROM signup WHERE Email = '$Email' AND Password = BINARY'$Password'";
+                
+                    $sql = "SELECT * FROM signup WHERE Email = '$Email'";
                     $result = mysqli_query($conn, $sql);
-
+                
                     if ($result->num_rows > 0) {
-                        $_SESSION['usermail']=$Email;
-                        $Email = "";
-                        $Password = "";
-                        header("Location: home.php");
+                        $user = $result->fetch_assoc();
+                        // Verify the password with the hash stored in the Password_Hash column
+                        if (password_verify($Password, $user['Password_Hash'])) {
+                            $_SESSION['usermail'] = $Email;
+                            $Email = "";
+                            $Password = "";
+                            header("Location: home.php");
+                        } else {
+                            echo "<script>swal({
+                                title: 'Invalid password',
+                                icon: 'error',
+                            });
+                            </script>";
+                        }
                     } else {
                         echo "<script>swal({
-                            title: 'Something went wrong',
+                            title: 'Email not found',
                             icon: 'error',
                         });
                         </script>";
@@ -142,61 +152,85 @@ session_start();
             </div>
 
             <!--============ signup =============-->
-            <?php       
-                if (isset($_POST['user_signup_submit'])) {
-                    $Username = $_POST['Username'];
-                    $Email = $_POST['Email'];
-                    $Password = $_POST['Password'];
-                    $CPassword = $_POST['CPassword'];
+            <?php     
+             
+             function aesEncrypt($data, $key) {
+                $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+                $encrypted = openssl_encrypt($data, 'aes-256-cbc', $key, 0, $iv);
+                return base64_encode($encrypted . '::' . $iv);
+            }
 
-                    if($Username == "" || $Email == "" || $Password == ""){
-                        echo "<script>swal({
-                            title: 'Fill the proper details',
-                            icon: 'error',
-                        });
-                        </script>";
-                    }
-                    else{
-                        if ($Password == $CPassword) {
-                            $sql = "SELECT * FROM signup WHERE Email = '$Email'";
-                            $result = mysqli_query($conn, $sql);
-    
-                            if ($result->num_rows > 0) {
-                                echo "<script>swal({
-                                    title: 'Email already exits',
-                                    icon: 'error',
-                                });
-                                </script>";
-                            } else {
-                                $sql = "INSERT INTO signup (Username,Email,Password) VALUES ('$Username', '$Email', '$Password')";
-                                $result = mysqli_query($conn, $sql);
-    
-                                if ($result) {
-                                    $_SESSION['usermail']=$Email;
-                                    $Username = "";
-                                    $Email = "";
-                                    $Password = "";
-                                    $CPassword = "";
-                                    header("Location: home.php");
-                                } else {
-                                    echo "<script>swal({
-                                        title: 'Something went wrong',
-                                        icon: 'error',
-                                    });
-                                    </script>";
-                                }
-                            }
-                        } else {
-                            echo "<script>swal({
-                                title: 'Password does not matched',
-                                icon: 'error',
-                            });
-                            </script>";
-                        }
-                    }
-                    
-                }
-            ?>
+             // Kunci enkripsi untuk AES (Anda harus menyimpannya dengan aman)
+             $key = "your-secret-key";
+             
+             // Proses ketika form pendaftaran disubmit
+             if (isset($_POST['user_signup_submit'])) {
+                 $Username = $_POST['Username'];
+                 $Email = $_POST['Email'];
+                 $Password = $_POST['Password'];
+                 $CPassword = $_POST['CPassword'];
+             
+                 // Validasi input kosong
+                 if ($Username == "" || $Email == "" || $Password == "") {
+                     echo "<script>swal({
+                         title: 'Fill the proper details',
+                         icon: 'error',
+                     });
+                     </script>";
+                 } else {
+                     // Validasi kecocokan password
+                     if ($Password == $CPassword) {
+                         // Cek apakah email sudah terdaftar
+                         $sql = "SELECT * FROM signup WHERE Email = '$Email'";
+                         $result = mysqli_query($conn, $sql);
+             
+                         if ($result->num_rows > 0) {
+                             echo "<script>swal({
+                                 title: 'Email already exists',
+                                 icon: 'error',
+                             });
+                             </script>";
+                         } else {
+                             // Enkripsi Username dan Email menggunakan AES
+                             $encryptedUsername = aesEncrypt($Username, $key);
+                             $encryptedEmail = aesEncrypt($Email, $key);
+             
+                             // Hash password menggunakan Bcrypt
+                             $hashedPassword = password_hash($Password, PASSWORD_BCRYPT);
+             
+                             // Simpan data yang sudah terenkripsi dan di-hash ke dalam database
+                             $sql = "INSERT INTO signup (Username, Encrypted_Username, Email, Encrypted_Email, Password, Password_Hash) 
+                                     VALUES ('$Username', '$encryptedUsername', '$Email', '$encryptedEmail', '$Password', '$hashedPassword')";
+                             $result = mysqli_query($conn, $sql);
+             
+                             if ($result) {
+                                 // Jika pendaftaran berhasil, arahkan ke halaman home
+                                 $_SESSION['usermail'] = $Email;
+                                 $Username = "";
+                                 $Email = "";
+                                 $Password = "";
+                                 $CPassword = "";
+                                 header("Location: home.php");
+                             } else {
+                                 echo "<script>swal({
+                                     title: 'Something went wrong',
+                                     icon: 'error',
+                                 });
+                                 </script>";
+                             }
+                         }
+                     } else {
+                         echo "<script>swal({
+                             title: 'Password does not match',
+                             icon: 'error',
+                         });
+                         </script>";
+                     }
+                 }
+             }
+                ?>
+                
+            
             <div id="sign_up">
                 <h2>Sign Up</h2>
 

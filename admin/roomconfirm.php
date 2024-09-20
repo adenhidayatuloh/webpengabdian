@@ -13,12 +13,9 @@ while($row=mysqli_fetch_array($re))
     $Country = $row['Country'];
     $Phone = $row['Phone'];
     $RoomType = $row['RoomType'];
-    $Bed = $row['Bed'];
-    $NoofRoom = $row['NoofRoom'];
-    $Meal = $row['Meal'];
+    $noofday = $row['nodays'];
     $cin = $row['cin'];
     $cout = $row['cout'];
-    $noofday = $row['nodays'];
     $stat = $row['stat'];
 }
 
@@ -33,80 +30,31 @@ if($stat == "NotConfirm")
     if($result){
 
         $type_of_room = 0;      
-        if($RoomType=="Superior Room")
+        if($RoomType=="Kamar Atas")
         {
-            $type_of_room = 3000;
+            $type_of_room = 350000;
         }
-        else if($RoomType=="Deluxe Room")
+        else if($RoomType=="Kamar Bawah")
         {
-            $type_of_room = 2000;
+            $type_of_room = 300000;
         }
-        else if($RoomType=="Guest House")
+        else if($RoomType=="Kamar Besar")
         {
-            $type_of_room = 1500;
-        }
-        else if($RoomType=="Single Room")
-        {
-            $type_of_room = 1000;
+            $type_of_room = 400000;
         }
         
         
-        if($Bed=="Single")
-        {
-            $type_of_bed = $type_of_room * 1/100;
-        }
-        else if($Bed=="Double")
-        {
-            $type_of_bed = $type_of_room * 2/100;
-        }
-        else if($Bed=="Triple")
-        {
-            $type_of_bed = $type_of_room * 3/100;
-        }
-        else if($Bed=="Quad")
-        {
-            $type_of_bed = $type_of_room * 4/100;
-        }
-            else if($Bed=="None")
-        {
-            $type_of_bed = $type_of_room * 0/100;
-        }
-
-        if($Meal=="Room only")
-        {
-            $type_of_meal=$type_of_bed * 0;
-        }
-        else if($Meal=="Breakfast")
-        {
-            $type_of_meal=$type_of_bed * 2;
-        }
-        else if($Meal=="Half Board")
-        {
-            $type_of_meal=$type_of_bed * 3;
-        }
-        else if($Meal=="Full Board")
-        {
-            $type_of_meal=$type_of_bed * 4;
-        }
+        
+       
                                                             
-        $ttot = $type_of_room *  $noofday * $NoofRoom;
-        $mepr = $type_of_meal *  $noofday;
-        $btot = $type_of_bed * $noofday;
+        $ttot = $type_of_room *  $noofday ;
+        $fintot = $ttot ;
 
-        $fintot = $ttot + $mepr + $btot;
-
-        $psql = "INSERT INTO payment(id,Name,Email,RoomType,Bed,NoofRoom,cin,cout,noofdays,roomtotal,bedtotal,meal,mealtotal,finaltotal) VALUES ('$id', '$Name', '$Email', '$RoomType', '$Bed', '$NoofRoom', '$cin', '$cout', '$noofday', '$ttot', '$btot', '$Meal', '$mepr', '$fintot')";
+        $psql = "INSERT INTO payment(id,Name,Email,RoomType,cin,cout,noofdays,roomtotal,finaltotal) VALUES ('$id', '$Name', '$Email', '$RoomType','$cin', '$cout', '$noofday', '$ttot',  '$fintot')";
 
         mysqli_query($conn,$psql);
 
         header("Location:roombook.php");
     }
 }
-// else
-// {
-//     echo "<script>alert('Guest Already Confirmed')</script>";
-//     header("Location:roombook.php");
-// }
-
-
 ?>

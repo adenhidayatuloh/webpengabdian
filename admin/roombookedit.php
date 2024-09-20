@@ -13,9 +13,10 @@ while($row=mysqli_fetch_array($re))
     $Email = $row['Email'];
     $Country = $row['Country'];
     $Phone = $row['Phone'];
+    $RoomType = $row['RoomType'];
     $cin = $row['cin'];
     $cout = $row['cout'];
-    $noofday = $row['nodays'];
+    // $nodays = $row['nodays'];
     $stat = $row['stat'];
 }
 
@@ -25,90 +26,85 @@ if (isset($_POST['guestdetailedit'])) {
     $EditCountry = $_POST['Country'];
     $EditPhone = $_POST['Phone'];
     $EditRoomType = $_POST['RoomType'];
-    $EditBed = $_POST['Bed'];
-    $EditNoofRoom = $_POST['NoofRoom'];
-    $EditMeal = $_POST['Meal'];
     $Editcin = $_POST['cin'];
     $Editcout = $_POST['cout'];
+    // $Editnodays = $_POST['nodays'];
 
-    $sql = "UPDATE roombook SET Name = '$EditName',Email = '$EditEmail',Country='$EditCountry',Phone='$EditPhone',RoomType='$EditRoomType',Bed='$EditBed',NoofRoom='$EditNoofRoom',Meal='$EditMeal',cin='$Editcin',cout='$Editcout',nodays = datediff('$Editcout','$Editcin') WHERE id = '$id'";
+    // $Editnoofday = (strtotime($Editcout) - strtotime($Editcin)) / (60 * 60 * 24);
+    $sql = "UPDATE roombook SET Name = '$EditName', Email = '$EditEmail', Country='$EditCountry', Phone='$EditPhone', RoomType='$EditRoomType',  cin='$Editcin', cout='$Editcout' WHERE id = '$id'";
 
     $result = mysqli_query($conn, $sql);
 
     $type_of_room = 0;
-    if($EditRoomType=="Superior Room")
+    if($EditRoomType=="Kamar Atas")
     {
-        $type_of_room = 3000;
+        $type_of_room = 350000;
     }
-    else if($EditRoomType=="Deluxe Room")
+    else if($EditRoomType=="Kamar Bawah")
     {
-        $type_of_room = 2000;
+        $type_of_room = 300000;
     }
-    else if($EditRoomType=="Guest House")
+    else if($EditRoomType=="Kamar Besar")
     {
-        $type_of_room = 1500;
-    }
-    else if($EditRoomType=="Single Room")
-    {
-        $type_of_room = 1000;
+        $type_of_room = 400000;
     }
     
     
-    if($EditBed=="Single")
-    {
-        $type_of_bed = $type_of_room * 1/100;
-    }
-    else if($EditBed=="Double")
-    {
-        $type_of_bed = $type_of_room * 2/100;
-    }
-    else if($EditBed=="Triple")
-    {
-        $type_of_bed = $type_of_room * 3/100;
-    }
-    else if($EditBed=="Quad")
-    {
-        $type_of_bed = $type_of_room * 4/100;
-    }
-    else if($EditBed=="None")
-    {
-        $type_of_bed = $type_of_room * 0/100;
-    }
+    // if($EditBed=="Single")
+    // {
+    //     $type_of_bed = $type_of_room * 1/100;
+    // }
+    // else if($EditBed=="Double")
+    // {
+    //     $type_of_bed = $type_of_room * 2/100;
+    // }
+    // else if($EditBed=="Triple")
+    // {
+    //     $type_of_bed = $type_of_room * 3/100;
+    // }
+    // else if($EditBed=="Quad")
+    // {
+    //     $type_of_bed = $type_of_room * 4/100;
+    // }
+    // else if($EditBed=="None")
+    // {
+    //     $type_of_bed = $type_of_room * 0/100;
+    // }
 
-    if($EditMeal=="Room only")
-    {
-        $type_of_meal=$type_of_bed * 0;
-    }
-    else if($EditMeal=="Breakfast")
-    {
-        $type_of_meal=$type_of_bed * 2;
-    }
-    else if($EditMeal=="Half Board")
-    {
-        $type_of_meal=$type_of_bed * 3;
-    }
-    else if($EditMeal=="Full Board")
-    {
-        $type_of_meal=$type_of_bed * 4;
-    }
+    // if($EditMeal=="Room only")
+    // {
+    //     $type_of_meal=$type_of_bed * 0;
+    // }
+    // else if($EditMeal=="Breakfast")
+    // {
+    //     $type_of_meal=$type_of_bed * 2;
+    // }
+    // else if($EditMeal=="Half Board")
+    // {
+    //     $type_of_meal=$type_of_bed * 3;
+    // }
+    // else if($EditMeal=="Full Board")
+    // {
+    //     $type_of_meal=$type_of_bed * 4;
+    // }
     
     // noofday update
-    $psql ="Select * from roombook where id = '$id'";
-    $presult = mysqli_query($conn,$psql);
-    $prow=mysqli_fetch_array($presult);
-    $Editnoofday = $prow['nodays'];
+    // $psql ="Select * from roombook where id = '$id'";
+    // $presult = mysqli_query($conn,$psql);
+    // $prow=mysqli_fetch_array($presult);
+    // $Editnodays = $prow['nodays'];
 
-    $editttot = $type_of_room*$Editnoofday * $EditNoofRoom;
-    $editmepr = $type_of_meal*$Editnoofday;
-    $editbtot = $type_of_bed*$Editnoofday;
+    // $editttot = $type_of_room*$Editnoofday ;
+    // $editmepr = $type_of_meal*$Editnoofday;
+    // $editbtot = $type_of_bed*$Editnoofday;
 
-    $editfintot = $editttot + $editmepr + $editbtot;
+    // $editfintot = $editttot + $editmepr + $editbtot;
+    // $editfintot = $editttot ;
+    $psql = "UPDATE roombook SET Name = '$EditName',Email = '$EditEmail',Country='$EditCountry',Phone='$EditPhone',RoomType='$EditRoomType',cin='$Editcin',cout='$Editcout' WHERE id = '$id'";
 
-    $psql = "UPDATE payment SET Name = '$EditName',Email = '$EditEmail',RoomType='$EditRoomType',Bed='$EditBed',NoofRoom='$EditNoofRoom',Meal='$EditMeal',cin='$Editcin',cout='$Editcout',noofdays = '$Editnoofday',roomtotal = '$editttot',bedtotal = '$editbtot',mealtotal = '$editmepr',finaltotal = '$editfintot' WHERE id = '$id'";
+    $result = mysqli_query($conn,$psql);
 
-    $paymentresult = mysqli_query($conn,$psql);
-
-    if ($paymentresult) {
+    if ($result) {
             header("Location:roombook.php");
     }
 
@@ -176,6 +172,7 @@ if (isset($_POST['guestdetailedit'])) {
 						<option value selected >Select your country</option>
                         <?php
 							foreach($countries as $key => $value):
+                                $selected = ($value == $Country) ? 'selected' : '';
 							echo '<option value="'.$value.'">'.$value.'</option>';
                             //close your tags!!
 							endforeach;
@@ -189,33 +186,33 @@ if (isset($_POST['guestdetailedit'])) {
                 <div class="reservationinfo">
                     <h4>Reservation information</h4>
                     <select name="RoomType" class="selectinput">
-						<option value selected >Type Of Room</option>
-                        <option value="Superior Room">SUPERIOR ROOM</option>
-                        <option value="Deluxe Room">DELUXE ROOM</option>
-						<option value="Guest House">GUEST HOUSE</option>
-						<option value="Single Room">SINGLE ROOM</option>
+                    <option value="">Type Of Room</option>
+                    <option value="Kamar Atas" <?php if($RoomType == 'Kamar Atas') echo 'selected'; ?>>Kamar Atas</option>
+                    <option value="Kamar Bawah" <?php if($RoomType == 'Kamar Bawah') echo 'selected'; ?>>Kamar Bawah</option>
+                    <option value="Kamar Besar" <?php if($RoomType == 'Kamar Besar') echo 'selected'; ?>>Kamar Besar</option>
+						<!-- <option value="Single Room">SINGLE ROOM</option> -->
                     </select>
-                    <select name="Bed" class="selectinput">
+                    <!-- <select name="Bed" class="selectinput">
 						<option value selected >Bedding Type</option>
                         <option value="Single">Single</option>
                         <option value="Double">Double</option>
 						<option value="Triple">Triple</option>
                         <option value="Quad">Quad</option>
 						<option value="None">None</option>
-                    </select>
-                    <select name="NoofRoom" class="selectinput">
+                    </select> -->
+                    <!-- <select name="NoofRoom" class="selectinput">
 						<option value selected >No of Room</option>
                         <option value="1">1</option>
-                        <!-- <option value="1">2</option>
-                        <option value="1">3</option> -->
-                    </select>
-                    <select name="Meal" class="selectinput">
+                        <option value="1">2</option>
+                        <option value="1">3</option>
+                    </select> -->
+                    <!-- <select name="Meal" class="selectinput">
 						<option value selected >Meal</option>
                         <option value="Room only">Room only</option>
                         <option value="Breakfast">Breakfast</option>
 						<option value="Half Board">Half Board</option>
 						<option value="Full Board">Full Board</option>
-					</select>
+					</select> -->
                     <div class="datesection">
                         <span>
                             <label for="cin"> Check-In</label>

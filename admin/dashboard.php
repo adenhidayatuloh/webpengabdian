@@ -18,21 +18,17 @@
     $roomrow = mysqli_num_rows($roomre);
 
     //roombook roomtype
-    $chartroom1 = "SELECT * FROM roombook WHERE RoomType='Superior Room'";
+    $chartroom1 = "SELECT * FROM roombook WHERE RoomType='Kamar Atas'";
     $chartroom1re = mysqli_query($conn, $chartroom1);
     $chartroom1row = mysqli_num_rows($chartroom1re);
 
-    $chartroom2 = "SELECT * FROM roombook WHERE RoomType='Deluxe Room'";
+    $chartroom2 = "SELECT * FROM roombook WHERE RoomType='Kamar Bawah'";
     $chartroom2re = mysqli_query($conn, $chartroom2);
     $chartroom2row = mysqli_num_rows($chartroom2re);
 
-    $chartroom3 = "SELECT * FROM roombook WHERE RoomType='Guest House'";
+    $chartroom3 = "SELECT * FROM roombook WHERE RoomType='Kamar Besar'";
     $chartroom3re = mysqli_query($conn, $chartroom3);
     $chartroom3row = mysqli_num_rows($chartroom3re);
-
-    $chartroom4 = "SELECT * FROM roombook WHERE RoomType='Single Room'";
-    $chartroom4re = mysqli_query($conn, $chartroom4);
-    $chartroom4row = mysqli_num_rows($chartroom4re);
 ?>
 <!-- moriss profit -->
 <?php 	
@@ -66,7 +62,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 
-    <title>BlueBird - Admin </title>
+    <title>Tikako - Admin </title>
 </head>
 <body>
    <div class="databox">
@@ -78,10 +74,10 @@
         <h2>Total Staff</h1>  
           <h1><?php echo $staffrow ?></h1>
         </div>
-        <div class="box profitbox">
+        <!-- <div class="box profitbox">
         <h2>Profit</h1>  
           <h1><?php echo $tot?> <span>&#8377</span></h1>
-        </div>
+        </div> -->
     </div>
     <div class="chartbox">
         <div class="bookroomchart">
@@ -99,10 +95,9 @@
 
 <script>
         const labels = [
-          'Superior Room',
-          'Deluxe Room',
-          'Guest House',
-          'Single Room',
+          'Kamar Atas',
+          'Kamar Bawah',
+          'Kamar Besar'
         ];
       
         const data = {
@@ -112,8 +107,7 @@
             backgroundColor: [
                 'rgba(255, 99, 132, 1)',
                 'rgba(255, 159, 64, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(153, 102, 255, 1)',
+                'rgba(54, 162, 235, 1)'
             ],
             borderColor: 'black',
             data: [<?php echo $chartroom1row ?>,<?php echo $chartroom2row ?>,<?php echo $chartroom3row ?>,<?php echo $chartroom4row ?>],

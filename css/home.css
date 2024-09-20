@@ -75,7 +75,7 @@ ul li a:hover{
     display: flex;
     justify-content: center;
 }
-.logo .bluebirdlogo {
+.logo .tikakologo {
     height: 100%;
 }
 
@@ -119,27 +119,37 @@ ul li a:hover{
 
 
 #firstsection .welcomeline{
-    position: absolute; 
-    display: flex;
-    height: 100vh;
+    /* position: absolute;  */
+    /* display: flex; */
+    /* height: 100%;
     width: 100%;
     justify-content: center;
     align-items: center;
-    z-index: 100;
-}
+    z-index: 100; */
+} 
 
-#firstsection .welcometag{
-    font-size: 110px;
+/* #firstsection .welcometag{
+    text-align: center;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    color: #efefef;
+    padding:60px;
+    font-size: 90px;
     font-weight: bold;
-    font-family: 'Cookie', cursive;
+    font-family: 'Poppins', sans-serif;
     letter-spacing: 2px;
     line-height: 100px;
-    padding: 5px;
-    /* text gradiant */
-    background: -webkit-linear-gradient(317deg, rgba(0, 60, 255, 0.81) 0%, rgb(255 0 123) 70%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+} */
+/* .welcomeline p{
+    position: absolute;
+    bottom: 40%;
+    left: 0%;
+    right: 0%;
+    width: 100%;
+    color: #ffffff;
+} */
 
 /* secondsection */
 
@@ -192,17 +202,14 @@ ul li a:hover{
     background-size: cover;
 }
 
-.h1{
-    background-image: url(../image/hotel1photo.webp);
+.hotelphoto.h1{
+    background-image: url(../image/kamaratas.jpg);
 }
-.h2{
-    background-image: url(../image/hotel2photo.jpg);
+.hotelphoto.h2{
+    background-image: url(../image/kamarbawah.jpg);
 }
-.h3{
-    background-image: url(../image/hotel3photo.avif);
-}
-.h4{
-    background-image: url(../image/hotel4photo.jpg);
+.hotelphoto.h3{
+    background-image: url(../image/kamarbesar.jpg);
 }
 
 .roomdata{
@@ -211,30 +218,39 @@ ul li a:hover{
 
 .roomdata h2{
 color: rgb(207, 211, 255);
-font-size: 30px;
+font-size: 18px;
 }
 
+.roomdata p{
+    color: rgb(207, 211, 255);
+    font-size: 16px;
+}
 .sevices{
     display: flex;
 }
 
 .services i{
     color:white;
-    margin: 7px;
+    margin: 3px;
 }
 
 .bookbtn{
-   margin: 10px;
+   margin: 5px;
+   display: flex;
 }
 
 /* roombookcss */
 
 #guestdetailpanel{
-    height: 100vh;
+    height: 200vh;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.558);
     position: fixed;
     z-index: 10000;
+    display: block;
+    top : "50%"; 
+left : "50%"; 
+transform : "translate(-50%, -50%)"; 
 }
 
 .logoutbtn{
@@ -272,23 +288,15 @@ font-size: 30px;
 }
 
 .box:nth-child(1){
-    background-image: url(../image/swimingpool.jpg);
+    background-image: url(../image/kolamrenang.JPG);
     background-size: cover;
 }
 .box:nth-child(2){
-    background-image: url(../image/spa.jpg);
+    background-image: url(../image/bebekair.JPG);
     background-size: cover;
 }
 .box:nth-child(3){
-    background-image: url(../image/food.jpg);
-    background-size: cover;
-}
-.box:nth-child(4){
-    background-image: url(../image/gym.jpg);
-    background-size: cover;
-}
-.box:nth-child(5){
-    background-image: url(../image/heli.jpg);
+    background-image: url(../image/karoke.jpg);
     background-size: cover
 }
 
@@ -342,15 +350,15 @@ font-size: 30px;
     #firstsection .carousel-item img{
         height: 50vh;
     }
-    #firstsection .welcomeline{
+    /* #firstsection .welcomeline{
         height: 50vh;
         
-    }
-    #firstsection .welcometag{
+    } */
+    /* #firstsection .welcometag{
         text-align: center;
         font-size: 50px;
         line-height: 60px;
-    }
+    } */
     #secondsection{
         height: auto;
     }
@@ -400,4 +408,5 @@ font-size: 30px;
     #contactus{
         padding: 0 30px;
     }
-}
+
+    }
