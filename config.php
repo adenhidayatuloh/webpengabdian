@@ -1,9 +1,9 @@
 <?php
 
-$server = "localhost";
-$username = "tikako_user";
-$password = "password123";
-$database = "tikakohotel";
+$server = "sql12.freemysqlhosting.net";
+$username = "sql12732636";
+$password = "L1JdweYeF6";
+$database = "sql12732636";
 
 $conn = mysqli_connect($server,$username,$password,$database);
 
